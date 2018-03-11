@@ -1,14 +1,27 @@
 library(data.table)
 library(dplyr)
 library(tidyr)
+library(stringr)
 
-raw_stock_data <- fread("Dated_stocks-us-adjClose.csv", fill=T)
-stock_data <- gather(raw_stock_data, key=Ticker, value=Close, names(raw_stock_data)[-1])
-head(stock_data)
+RawStockData <- fread("Dated_stocks-us-adjClose.csv", fill=T)
+StockData <- gather(RawStockData, key=Ticker, value=Close, names(raw_stock_data)[-1]) %>%
+  filter(!is.na(Close))
 
-ticker_summary <- stock_data %>% 
+names(StockData) <- c('ObsDate', 'Ticker', 'ClosePrice')
+head(StockData)
+
+TickerSummary <- StockData %>% 
   group_by(Ticker) %>% 
-  summarise(min(Close), max(Close)) %>%
-  filter(!is.na(`min(Close)`)) %>%
-  mutate(`range(Close)` = `max(Close)` - `min(Close)`)
+  summarise(min(ClosePrice), max(ClosePrice)) %>%
+  filter(!is.na(`min(ClosePrice)`)) %>%
+  mutate(`range(ClosePrice)` = `max(ClosePrice)` - `min(ClosePrice)`)
+
+
+head(StockData)
+summary(StockData)
+
+# MonthlySummary <- StockData %>%
+  # mutate(Month = str_sub(obs_date, 1, 7))
+
+
 
