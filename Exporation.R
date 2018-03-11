@@ -4,7 +4,8 @@ library(tidyr)
 library(stringr)
 
 RawStockData <- fread("Dated_stocks-us-adjClose.csv", fill=T)
-StockData <- gather(RawStockData, key=Ticker, value=Close, names(raw_stock_data)[-1]) %>%
+RawStockData
+StockData <- gather(RawStockData, key=Ticker, value=Close, names(RawStockData)[-1]) %>%
   filter(!is.na(Close))
 
 names(StockData) <- c('ObsDate', 'Ticker', 'ClosePrice')
@@ -20,8 +21,11 @@ TickerSummary <- StockData %>%
 head(StockData)
 summary(StockData)
 
-# MonthlySummary <- StockData %>%
-  # mutate(Month = str_sub(obs_date, 1, 7))
+MonthlySummary <- StockData %>%
+  mutate(Month = str_sub(ObsDate, 1, 7))
+
+head(MonthlySummary)
+
 
 
 
