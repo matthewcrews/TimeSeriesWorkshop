@@ -20,8 +20,8 @@ TickerSummary <- StockData %>%
 head(StockData)
 summary(StockData)
 
-# MonthlySummary <- StockData %>%
-  # mutate(Month = str_sub(obs_date, 1, 7))
+MonthlySummary <- StockData %>%
+mutate(Month = str_sub(ObsDate, 1, 7))
 
 
 
